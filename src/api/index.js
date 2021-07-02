@@ -1,9 +1,13 @@
 import axios from 'axios';
 import * as util from '../assets/util.js';
+import Qs from 'qs'
 
 const instance = axios.create({
-  baseURL: 'http://rap2api.taobao.org/app/mock/224',
-  timeout: 10000
+  baseURL: 'https://tag-cloud.grouk.com',
+  timeout: 10000,
+  transformRequest: [function(data) {
+    return Qs.stringify(data);
+  }],
 });
 
 instance.defaults.headers.post['Content-Type'] = 'application/json';

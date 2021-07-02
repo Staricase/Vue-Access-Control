@@ -1,5 +1,4 @@
 <style scoped>
-
 .extendGroup {
   float: right;
   margin-right: 20px;
@@ -15,23 +14,44 @@
   <div v-loading="loading">
     <!-- 操作 -->
     <div class="operation">
-      <el-button size="small" type="primary" v-has="[role.request]" @click="fetchData">查询</el-button>
-      <el-button size="small" type="danger" v-has="[role.remove]">删除</el-button>
-      <el-button size="small" v-if="$_has([role.request]) && canReset">重置</el-button>
-      <el-button size="small" type="info" @click="requestNotAllowed">尝试发起越权请求</el-button>
+      <el-button
+        size="small"
+        type="primary"
+        v-has="[role.request]"
+        @click="fetchData"
+        >查询</el-button
+      >
+      <el-button size="small" type="danger" v-has="[role.remove]"
+        >删除</el-button
+      >
+      <!-- <el-button size="small" v-if="$_has([role.request]) && canReset"
+        >重置</el-button
+      > -->
+      <el-button size="small" type="info" @click="requestNotAllowed"
+        >尝试发起越权请求</el-button
+      >
     </div>
     <!-- table start  -->
     <el-table :data="list" border style="width: 100%">
-      <el-table-column prop="name" label="名称" width="120">
+      <el-table-column prop="name" label="名称" width="120"> </el-table-column>
+      <el-table-column
+        prop="timestamp"
+        label="创建时间"
+        :formatter="formateDate"
+      >
       </el-table-column>
-      <el-table-column prop="timestamp" label="创建时间">
-      </el-table-column>
-      <el-table-column prop="summary" label="备注" :show-overflow-tooltip="true">
+      <el-table-column
+        prop="summary"
+        label="备注"
+        :show-overflow-tooltip="true"
+      >
       </el-table-column>
       <el-table-column label="操作" width="150" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info">编辑</el-button>
-          <el-button size="mini" type="danger">删除</el-button>
+          <el-button size="mini" type="danger" @click="deleteRole(scope.row.id)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -40,13 +60,14 @@
 </template>
 
 <script>
-import * as role from '../api/role';
+import * as role from "../api/role";
+import * as util from "../assets/util.js";
 
 let myMixin = {
   data: function() {
-    return { role }
-  }
-}
+    return { role };
+  },
+};
 
 export default {
   mixins: [myMixin],
@@ -54,8 +75,8 @@ export default {
     return {
       list: [],
       canReset: true,
-      loading: false
-    }
+      loading: false,
+    };
   },
   methods: {
     fetchData() {
@@ -65,12 +86,30 @@ export default {
         this.loading = false;
       });
     },
-    requestNotAllowed: function(){
+
+    deleteRole(rid) {
+      this.loading = true;
+      role.remove
+        .r({ id: rid })
+        .then((res) => {
+          this.loading = false;
+          alert(res.data);
+        })
+        .catch((err) => {
+          this.loading = false;
+        });
+    },
+
+    requestNotAllowed: function() {
       role.notAllowed.r();
-    }
+    },
+
+    formateDate(row, col, value, index) {
+      return util.formatDate(value, "MM/dd hh:mm");
+    },
   },
   created() {
-    this.fetchData()
-  }
-}
+    this.fetchData();
+  },
+};
 </script>

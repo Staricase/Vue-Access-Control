@@ -90,43 +90,43 @@ export const buildMenu = function (array, ckey) {
  */
 export const formatDate = (value, fmt) => {
   if (!value) {
-      return "--"
+    return "--"
   }
   switch (fmt) {
-      case 'year':
-          fmt = "yyyy"
-          break;
-      case 'month':
-          fmt = "yyyy/MM"
-          break;
-      case 'day':
-          fmt = "yyyy/MM/dd"
-          break;
-      case undefined:
-          fmt = "yyyy/MM/dd hh:mm"
-          break;
+    case 'year':
+      fmt = "yyyy"
+      break;
+    case 'month':
+      fmt = "yyyy/MM"
+      break;
+    case 'day':
+      fmt = "yyyy/MM/dd"
+      break;
+    case undefined:
+      fmt = "yyyy/MM/dd hh:mm"
+      break;
   }
   if (!isNaN(parseInt(value))) {
-      value = parseInt(value)
+    value = parseInt(value)
   }
 
   let getDate = new Date(value);
   let o = {
-      'M+': getDate.getMonth() + 1,
-      'd+': getDate.getDate(),
-      'h+': getDate.getHours(),
-      'm+': getDate.getMinutes(),
-      's+': getDate.getSeconds(),
-      'q+': Math.floor((getDate.getMonth() + 3) / 3),
-      'S': getDate.getMilliseconds()
+    'M+': getDate.getMonth() + 1,
+    'd+': getDate.getDate(),
+    'h+': getDate.getHours(),
+    'm+': getDate.getMinutes(),
+    's+': getDate.getSeconds(),
+    'q+': Math.floor((getDate.getMonth() + 3) / 3),
+    'S': getDate.getMilliseconds()
   }
   if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
+    fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
   }
   for (let k in o) {
-      if (new RegExp('(' + k + ')').test(fmt)) {
-          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
-      }
+    if (new RegExp('(' + k + ')').test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+    }
   }
   return fmt
 }

@@ -1,5 +1,8 @@
 import instance from './index';
 const preUrlPath = '';
+const ROLE_SUPER = 2;
+const ROLE_ADMIN = 1;
+
 //获取角色列表
 const request = {
   p: ['get,/roles'],
@@ -11,7 +14,7 @@ const request = {
 const remove = {
   p: ['delete,/role/**'],
   r: params => {
-    return instance.get(`${preUrlPath}/role/${params.id}`)
+    return instance.delete(`${preUrlPath}/role/${params.id}`)
   }
 };
 //越权请求
@@ -25,5 +28,7 @@ const notAllowed = {
 export {
   request,
   remove,
-  notAllowed
+  notAllowed,
+  ROLE_SUPER,
+  ROLE_ADMIN,
 }

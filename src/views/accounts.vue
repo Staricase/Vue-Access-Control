@@ -8,7 +8,7 @@
     <div class="operation">
       <el-button size="small" type="primary" v-has="[account.request]" @click="fetchData">查询</el-button>
       <el-button size="small" type="danger" v-has="[account.remove]">删除</el-button>
-      <el-button size="small" v-if="$_has([account.request]) && canReset">重置</el-button>
+      <!-- <el-button size="small" v-if="$_has([account.request]) && canReset">重置</el-button> -->
       <el-button size="small" type="info" @click="requestNotAllowed">尝试发起越权请求</el-button>
     </div>
     <!-- table start  -->

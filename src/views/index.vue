@@ -47,7 +47,7 @@
   width: 100%;
   height: 55px;
   line-height: 55px;
-  background: #409EFF;
+  background: #409eff;
 }
 
 .logo {
@@ -56,7 +56,7 @@
   width: 270px;
   font-size: 1.4em;
   text-decoration: none;
-  color:#fff;
+  color: #fff;
 }
 
 .nav {
@@ -68,12 +68,12 @@
 .usermenu {
   float: right;
   padding: 0 2em;
-  color:#fff;
+  color: #fff;
 }
 .usermenu a {
   text-decoration: none;
   margin: 0 0.2em 0 1em;
-  color:inherit;
+  color: inherit;
 }
 #main {
   height: 100%;
@@ -84,84 +84,113 @@
 <template>
   <div class="g-body">
     <el-row type="flex" class="g-head">
-      <a href="http://refined-x.com" target="_blank" title="Vue权限控制" class="logo" >Vue-Access-Control</a>
+      <a
+        href="http://refined-x.com"
+        target="_blank"
+        title="Vue权限控制"
+        class="logo"
+        >Vue-Access-Control</a
+      >
       <div class="nav">
         <div class="usermenu" v-if="user.id">
-          欢迎您：{{user.name}}
-          <router-link :to="{path: '/'}"><i class="el-icon-location"></i>首页</router-link>
-          <a href="javascript:;" @click="logout"><i class="el-icon-circle-close"></i>退出</a>
+          欢迎您：{{ user.name }}
+          <router-link :to="{ path: '/' }"
+            ><i class="el-icon-location"></i>首页</router-link
+          >
+          <a href="javascript:;" @click="logout"
+            ><i class="el-icon-circle-close"></i>退出</a
+          >
         </div>
       </div>
     </el-row>
 
-    <el-menu :default-active="activeMenu" class="g-side" router >
+    <el-menu :default-active="activeMenu" class="g-side" router>
       <template v-for="(route, index) in menus">
         <template v-if="route.children">
           <el-submenu :key="index" :index="route.name">
             <template slot="title">
-              {{route.meta.name || route.name}}</template>
-            <el-menu-item v-for="(cRoute, cIndex) in route.children" :key="cIndex" :index="cRoute.name" :route="cRoute"><i class="ion menuIcon" v-html="cRoute.meta.icon"></i>{{cRoute.meta.name || cRoute.name}}</el-menu-item>
+              {{ route.meta.name || route.name }}</template
+            >
+            <el-menu-item
+              v-for="(cRoute, cIndex) in route.children"
+              :key="cIndex"
+              :index="cRoute.name"
+              :route="cRoute"
+              ><i class="ion menuIcon" v-html="cRoute.meta.icon"></i
+              >{{ cRoute.meta.name || cRoute.name }}</el-menu-item
+            >
           </el-submenu>
         </template>
         <template v-else>
-          <el-menu-item :route="route" :index="route.name" :key="'nav'+index">{{route.meta.name || route.name}}</el-menu-item>
+          <el-menu-item
+            :route="route"
+            :index="route.name"
+            :key="'nav' + index"
+            >{{ route.meta.name || route.name }}</el-menu-item
+          >
         </template>
       </template>
     </el-menu>
 
     <div class="g-statues-bar p-lr">
       <el-breadcrumb separator="/" class="bread" id="mybread">
-        <el-breadcrumb-item v-for="(item,index) in breadcrumbs" :key="index" :to="item">
+        <el-breadcrumb-item
+          v-for="(item, index) in breadcrumbs"
+          :key="index"
+          :to="item"
+        >
           {{ item.meta.name || item.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <template v-if="$route.path=='/'">
-      <dashboard />
+    <template v-if="$route.path == '/accounts'">
+      <!-- <dashboard /> -->
+      <accounts />
     </template>
     <template v-else>
-    <router-view id="main"></router-view>
+      <router-view id="main"></router-view>
     </template>
-    
   </div>
 </template>
 <script>
+import Accounts from "./accounts.vue";
 
 export default {
   components: {
-    dashboard: () => import("../components/dashboard.vue")
+    // dashboard: () => import("../components/dashboard.vue")
+    accounts: () => import("./accounts.vue"),
   },
   data() {
     return {
       user: this.$root.userData,
-      menus: this.$root.menuData
+      menus: this.$root.menuData,
     };
   },
   computed: {
-    activeMenu: function(){
-      return this.$route.name
+    activeMenu: function() {
+      return this.$route.name;
     },
-    breadcrumbs: function(){
-      return (this.$route && this.$route.matched) || []
-    }
+    breadcrumbs: function() {
+      return (this.$route && this.$route.matched) || [];
+    },
   },
   methods: {
     logout: function() {
       this.$confirm("确定退出?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "info"
+        type: "info",
       })
         .then(() => {
           this.$emit("logout");
         })
         .catch(() => {});
-    }
+    },
   },
   created: function() {
     if (!this.user) {
       this.$router.push({ path: "/login" });
     }
-  }
+  },
 };
 </script>

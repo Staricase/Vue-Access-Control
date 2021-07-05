@@ -132,7 +132,7 @@ export default {
             // return Promise.reject({
             //   message: res.data.msg //'登录异常！'
             // });
-            vm.$message.error(res.data.msg);
+            // vm.$message.error(res.data.msg);
           }
         })
         .catch((err) => {

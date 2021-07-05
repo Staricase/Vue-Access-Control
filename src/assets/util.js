@@ -134,35 +134,44 @@ export const formatDate = (value, fmt) => {
 //ajax错误处理
 export const catchError = function (error) {
   if (error.response) {
-    switch (error.response.status) {
-      case 400:
-        Vue.prototype.$message({
-          message: error.response.data.message || '请求参数异常',
-          type: 'error'
-        });
-        break;
-      case 401:
-        sessionStorage.removeItem('user');
-        Vue.prototype.$message({
-          message: error.response.data.message || '密码错误或账号不存在！',
-          type: 'warning',
-          onClose: function () {
-            location.reload();
-          }
-        });
-        break;
-      case 403:
-        Vue.prototype.$message({
-          message: error.response.data.message || '无访问权限，请联系企业管理员',
-          type: 'warning'
-        });
-        break;
-      default:
-        Vue.prototype.$message({
-          message: error.response.data.message || '服务端异常，请联系技术支持',
-          type: 'error'
-        });
+    if (error.response.status != 200) {
+      switch (error.response.status) {
+        case 400:
+          Vue.prototype.$message({
+            message: error.response.data.message || '请求参数异常',
+            type: 'error'
+          });
+          break;
+        case 401:
+          sessionStorage.removeItem('user');
+          Vue.prototype.$message({
+            message: error.response.data.message || '密码错误或账号不存在！',
+            type: 'warning',
+            onClose: function () {
+              location.reload();
+            }
+          });
+          break;
+        case 403:
+          Vue.prototype.$message({
+            message: error.response.data.message || '无访问权限，请联系企业管理员',
+            type: 'warning'
+          });
+          break;
+        default:
+          Vue.prototype.$message({
+            message: error.response.data.message || '服务端异常，请联系技术支持',
+            type: 'error'
+          });
+      }
+    } else {
+      Vue.prototype.$message({
+        message: error.response.data.msg || '服务端异常，请联系技术支持',
+        type: 'error'
+      });
+      return Promise.resolve(error);
     }
+
   }
   return Promise.reject(error);
 }

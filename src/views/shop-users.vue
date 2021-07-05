@@ -14,15 +14,13 @@
       <el-button size="small" type="success" @click="dialogFormVisible = true"
         >新增</el-button
       >
-      <!-- <el-button size="small" v-if="$_has([account.request]) && canReset">重置</el-button> -->
-      <!-- <el-button size="small" type="info" @click="requestNotAllowed"
-        >尝试发起越权请求</el-button
-      > -->
+     
+     
     </div>
     <!-- table start  -->
     <el-table :data="list" border style="width: 100%">
       <el-table-column prop="name" label="账号" width="150"> </el-table-column>
-      <el-table-column prop="role" label="角色" width="100"> </el-table-column>
+      <!-- <el-table-column prop="role" label="角色" width="100"> </el-table-column> -->
       <el-table-column prop="id" label="ID" width="200"> </el-table-column>
       <el-table-column
         prop="createTime"
@@ -75,18 +73,18 @@
     </el-table>
     <!-- table end  -->
 
-    <el-dialog title="新增管理员" :visible.sync="dialogFormVisible">
+    <el-dialog title="新增店员账号" :visible.sync="dialogFormVisible">
       <add-admin v-on:insertAdmin="insertNewAdmin" />
     </el-dialog>
 
-    <el-dialog title="编辑管理员" :visible.sync="editFormVisible">
+    <el-dialog title="编辑店员账号" :visible.sync="editFormVisible">
       <add-admin :adminInfo="selectedAdminInfo" v-on:modifyPwd="modifyPwd" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import * as account from "../api/account";
+import * as account from "../api/shopuser";
 import * as util from "../assets/util";
 import addAdmin from "./add-admin.vue";
 

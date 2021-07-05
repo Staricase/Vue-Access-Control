@@ -1,5 +1,5 @@
 import instance from './index';
-const preUrlPath = '/admin';
+const preUrlPath = '/adminUser';
 //获取账户列表
 const request = {
   p: ['post,/accounts'],
@@ -32,18 +32,10 @@ const edit = {
     return instance.post(`${preUrlPath}/update`, params)
   }
 };
-//越权请求
-const notAllowed = {
-  p: ['get,/roles/notAllowed'],
-  r: params => {
-    return instance.get(`${preUrlPath}/roles/notAllowed`, { params })
-  }
-}
 
 export {
   request,
   addAdmin,
   remove,
   edit,
-  notAllowed
 }

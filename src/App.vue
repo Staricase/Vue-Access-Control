@@ -14,7 +14,7 @@
 import Vue from "vue";
 import instance from "./api";
 import * as Role from "./api/role";
-import AllRoutesData from "./router/fullpath";
+import * as RouteData from "./router/fullpath";
 import * as util from "./assets/util.js";
 
 export default {
@@ -25,6 +25,15 @@ export default {
     };
   },
   methods: {
+    AllRoutesData() {
+      if (this.$root.userData.role === Role.ROLE_SUPER) {
+        return RouteData.supper_root;
+      } else if (this.$root.userData.role === Role.ROLE_ADMIN) {
+        return RouteData.admin_route;
+      }
+      return {};
+    },
+
     setInterceptor: function(resourcePermission) {
       instance.interceptors.request.use((config) => {
         // Get request path
@@ -116,7 +125,7 @@ export default {
         let replyResult = [];
         array.forEach((route) => {
           let pathKey = (base ? base + "/" : "") + route.path;
-          // if (routePermission[pathKey]) 
+          // if (routePermission[pathKey])
           {
             if (Array.isArray(route.children)) {
               route.children = findLocalRoute(
@@ -133,7 +142,8 @@ export default {
           actualRouter = actualRouter.concat(replyResult);
         }
       };
-      findLocalRoute(AllRoutesData[0].children);
+
+      findLocalRoute(this.AllRoutesData()[0].children);
 
       // If the user does not have any routing authority
 
@@ -158,7 +168,7 @@ export default {
 
       // Add actual routing to application
 
-      let originPath = util.deepcopy(AllRoutesData);
+      let originPath = util.deepcopy(this.AllRoutesData());
       originPath[0].children = actualRouter;
 
       originPath = originPath.concat([
@@ -315,13 +325,18 @@ export default {
        * Monitor login events
        * Will trigger the events in views/login.vue
        */
-      this.$router.replace({ path: newPath || "/" });
 
-      window.location.href = process.env.BASE_URL || "/";
-
-      // this.signin(() => {
-      //   this.$router.replace({ path: newPath || "/" });
-      // });
+      this.signin(() => {
+        // this.$router.replace({ path: newPath || "/" });
+        if (this.$root.userData.role === Role.ROLE_SUPER) {
+          this.$router.replace({ path: "/accounts" });
+        } else if (this.$root.userData.role === Role.ROLE_ADMIN) {
+          this.$router.replace({ path: "/shop_users" });
+        }else {
+          // TODO:
+          
+        }
+      });
     },
     logoutDirect: function() {
       /*

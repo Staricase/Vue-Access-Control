@@ -80,7 +80,7 @@
     </el-dialog>
 
     <el-dialog title="编辑管理员" :visible.sync="editFormVisible">
-      <add-admin :adminInfo="selectedAdminInfo" v-on:modifyPwd="modifyPwd" />
+      <add-admin :adminInfo="selectedAdminInfo"  v-on:modifyPwd="modifyPwd" />
     </el-dialog>
   </div>
 </template>

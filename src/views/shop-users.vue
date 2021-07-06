@@ -14,8 +14,6 @@
       <el-button size="small" type="success" @click="dialogFormVisible = true"
         >新增</el-button
       >
-     
-     
     </div>
     <!-- table start  -->
     <el-table :data="list" border style="width: 100%">
@@ -77,8 +75,16 @@
       <add-admin v-on:insertAdmin="insertNewAdmin" />
     </el-dialog>
 
-    <el-dialog title="编辑店员账号" :visible.sync="editFormVisible">
-      <add-admin :adminInfo="selectedAdminInfo" v-on:modifyPwd="modifyPwd" />
+    <el-dialog
+      title="编辑店员账号"
+      :visible.sync="editFormVisible"
+      :before-close="closeEdit"
+    >
+      <add-admin
+        :adminInfo="selectedAdminInfo"
+        :dataInit="dataInit"
+        v-on:modifyPwd="modifyPwd"
+      />
     </el-dialog>
   </div>
 </template>
@@ -86,7 +92,7 @@
 <script>
 import * as account from "../api/shopuser";
 import * as util from "../assets/util";
-import addAdmin from "./add-admin.vue";
+import addAdmin from "./add-user.vue";
 
 let myMixin = {
   data: function() {
@@ -106,6 +112,7 @@ export default {
       dialogFormVisible: false,
       editFormVisible: false,
       selectedAdminInfo: null,
+      dataInit: false,
     };
   },
   methods: {
@@ -128,8 +135,13 @@ export default {
       const user = this.list.find((user) => {
         return user.id == info;
       });
+      this.dataInit = false;
       this.selectedAdminInfo = user;
       this.editFormVisible = true;
+      let vm = this;
+      this.$nextTick(() => {
+        vm.dataInit = true;
+      });
     },
 
     modifyPwd(user) {
@@ -140,14 +152,15 @@ export default {
       this.editFormVisible = false;
     },
 
+    closeEdit(done) {
+    //   this.dataInit = false;
+      done();
+    },
+
     insertNewAdmin(info) {
       let vm = this;
       vm.list.splice(0, 0, info);
       vm.dialogFormVisible = false;
-    },
-
-    requestNotAllowed: function() {
-      account.notAllowed.r();
     },
 
     formateDate(row, col, value, index) {

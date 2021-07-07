@@ -29,6 +29,14 @@ const admin_route = [{
         name: '店员账号管理'
       },
       component: (resolve) => require(['../views/shop-users.vue'], resolve)
+    },
+    {
+      path: '/goods',
+      name: '平台-商品管理',
+      meta: {
+        name: '商品管理',
+      },
+      component: (resolve) => require(['../views/goods-list.vue'], resolve)
     }
   ]
 }];

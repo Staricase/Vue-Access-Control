@@ -5,8 +5,11 @@ import Qs from 'qs'
 const instance = axios.create({
   baseURL: 'https://tag-cloud.grouk.com',
   timeout: 10000,
-  transformRequest: [function (data) {
-    return Qs.stringify(data);
+  transformRequest: [function (data, headers) {
+    if (headers.post['Content-Type'] == 'application/x-www-form-urlencoded') {
+      return Qs.stringify(data);
+    }
+    return data;
   }],
 });
 

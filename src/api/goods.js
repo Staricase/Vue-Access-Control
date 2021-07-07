@@ -1,29 +1,59 @@
 import instance from './index';
-const preUrlPath = '';
-//查询药品
+const preUrlPath = 'adminFruit';
+//商品列表
 const request = {
-  p: ['get,/medications'],
+  p: ['post,/goods'],
   r: params => {
-    return instance.get(`${preUrlPath}/medications`, {params})
+    return instance.post(`${preUrlPath}/list`, params)
   }
 };
-//批量删除药品
+//删除商品
 const remove = {
-  p: ['delete,/medication/**'],
+  p: ['post,/goods/**'],
   r: params => {
-    return instance.delete(`${preUrlPath}/medication/${params.id}`)
+    return instance.post(`${preUrlPath}/delete`, params)
   }
 };
+
+const edit = {
+  p: ['post,/goods/**'],
+  r: params => {
+    return instance.post(`${preUrlPath}/update`, params)
+  }
+}
+const add_good = {
+  p: ['post,/goods/**'],
+  r: params => {
+    return instance.post(`${preUrlPath}/add`, params)
+  }
+}
+
+const importFile = {
+  p: ['post,/goods/**'],
+  r: params => {
+    return instance.post(`${preUrlPath}/importExcel`, params, {
+      headers: {
+        post: {
+          "Content-Type": "multipart/form-data",
+        }
+      }
+    })
+  }
+}
+
 //越权请求
 const notAllowed = {
   p: ['get,/roles/notAllowed'],
   r: params => {
-    return instance.get(`${preUrlPath}/roles/notAllowed`, {params})
+    return instance.get(`${preUrlPath}/roles/notAllowed`, { params })
   }
 }
 
 export {
   request,
   remove,
+  edit,
+  add_good,
+  importFile,
   notAllowed
 }

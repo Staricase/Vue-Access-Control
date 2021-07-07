@@ -23,8 +23,8 @@
   <div>
     <div class="g-center login-page" @keyup.enter="login">
       <el-form class="login-form">
-        <h1 class="main-title">Vue-Access-Control</h1>
-        <p class="des">Frontend access control framework based Vue</p>
+        <h1 class="main-title">店铺后台管理</h1>
+        <!-- <p class="des">Frontend access control framework based Vue</p> -->
         <el-form-item>
           <el-input
             :autofocus="true"
@@ -50,27 +50,6 @@
             >{{ btnText }}</el-button
           >
         </el-form-item>
-        <el-row style="text-align:center">
-          <el-col :span="8">
-            <a
-              href="https://github.com/tower1229/Vue-Access-Control"
-              target="_blank"
-              ><el-button type="text" icon="el-icon-info">Github</el-button></a
-            >
-          </el-col>
-          <el-col :span="8">
-            <a
-              href="https://refined-x.com/2017/11/28/Vue2.0%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"
-              target="_blank"
-              ><el-button type="text" icon="el-icon-info">介绍</el-button></a
-            >
-          </el-col>
-          <el-col :span="8">
-            <a href="https://refined-x.com/" target="_blank"
-              ><el-button type="text" icon="el-icon-info">博客</el-button></a
-            >
-          </el-col>
-        </el-row>
       </el-form>
     </div>
   </div>
@@ -88,10 +67,13 @@ const requestLogin = (params) => {
   // let base64 = CryptoJS.enc.Base64.stringify(words);
   // params.password = base64;
 
-  return instance.post("/admin/login", params, {headers: {
-    // Overwrite Axios's automatically set Content-Type
-    'accept': '*/*',
-    'Content-Type': 'application/x-www-form-urlencoded'}});
+  return instance.post("/admin/login", params, {
+    headers: {
+      // Overwrite Axios's automatically set Content-Type
+      accept: "*/*",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
 };
 
 export default {

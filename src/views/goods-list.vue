@@ -37,6 +37,17 @@
       <!-- <el-button size="small" v-if="$_has([goods.request]) && canReset">重置</el-button> -->
       <!-- <el-button size="small" type="info" @click="requestNotAllowed">尝试发起越权请求</el-button> -->
     </div>
+
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 30, 50]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalSize"
+    >
+    </el-pagination>
     <!-- list -->
     <el-table :data="list" border style="width: 100%">
       <el-table-column prop="fruitId" label="商品编号" width="120">
@@ -76,6 +87,8 @@
     </el-table>
     <!-- table end  -->
 
+    <br />
+
     <el-dialog title="新增商品信息" :visible.sync="dialogFormVisible">
       <add-goods v-on:insertGoods="insertNewGoods" />
     </el-dialog>
@@ -107,6 +120,9 @@ export default {
   data() {
     return {
       list: [],
+      currentPage: 1,
+      pageSize: 10,
+      totalSize: 0,
       loading: false,
       canReset: false,
       dialogFormVisible: false,
@@ -117,13 +133,31 @@ export default {
     };
   },
   methods: {
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.fetchData();
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
+      this.fetchData();
+    },
+
     fetchData: function() {
       let vm = this;
+      // this.totalSize = 10;
       vm.loading = true;
-      goods.request.r(vm.queryParam).then((res) => {
-        vm.list = res.data.result.reverse();
-        vm.loading = false;
-      });
+      goods.pageRequest
+        .r({ pageNum: vm.currentPage, pageSize: vm.pageSize })
+        .then((res) => {
+          vm.totalSize = parseInt(res.data.result.total);
+          vm.list = res.data.result.data;
+          vm.loading = false;
+        });
+
+      // goods.request.r(vm.queryParam).then((res) => {
+      //   vm.list = res.data.result.reverse();
+      //   vm.loading = false;
+      // });
     },
 
     importFromFile(params) {

@@ -7,6 +7,13 @@ const request = {
     return instance.post(`${preUrlPath}/list`, params)
   }
 };
+
+const pageRequest = {
+  p: ['post,/goods'],
+  r: params => {
+    return instance.post(`${preUrlPath}/page`, params)
+  }
+};
 //删除商品
 const remove = {
   p: ['post,/goods/**'],
@@ -51,6 +58,7 @@ const notAllowed = {
 
 export {
   request,
+  pageRequest,
   remove,
   edit,
   add_good,

@@ -8,6 +8,7 @@
     ref="ruleForm"
     label-width="100px"
     class="demo-ruleForm"
+    size="small"
   >
     <el-form-item label="编号" prop="fruitId">
       <el-input v-model="ruleForm.fruitId"></el-input>
